@@ -15,9 +15,10 @@
 ---
 
 <div align="center">
-<img src="docs/screenshots/chat-home.png" width="220" />
-<img src="docs/screenshots/chat-reply.png" width="220" />
-<img src="docs/screenshots/diary-list.png" width="220" />
+<img src="docs/screenshots/chat-home.png" width="180" />
+<img src="docs/screenshots/chat-reply.png" width="180" />
+<img src="docs/screenshots/diary-list.png" width="180" />
+<img src="docs/screenshots/settings.png" width="180" />
 </div>
 
 ---
@@ -53,6 +54,7 @@ flutter build apk --release   # 输出在 build/app/outputs/flutter-apk/
 | 📝 多轮合并 | 一天聊多次？自动按时间线合并到同一篇日记 |
 | ✍️ 手动编辑 | 跳过 AI，直接写日记，支持语音输入 |
 | 🔍 关键词搜索 | 搜索内容高亮匹配，快速翻阅过去的记录 |
+| 🎭 性格自定义 | 自定义小酥的聊天风格和日记整理偏好，让她更懂你 |
 | 🔒 本地存储 | Web 用 IndexedDB，Android 用 SQLite，数据不上云 |
 | 🎨 暖心界面 | 奶茶色系，圆润设计，看着就舒服 |
 | 🤖 朴实记录 | 不添油加醋，保留你自己的语言风格 |
