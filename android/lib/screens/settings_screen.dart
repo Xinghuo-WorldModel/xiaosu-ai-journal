@@ -11,6 +11,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final _keyController = TextEditingController();
   final _urlController = TextEditingController();
+  final _personalityController = TextEditingController();
+  final _diaryStyleController = TextEditingController();
   bool _obscureKey = true;
   bool _isSaving = false;
 
@@ -23,8 +25,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _loadSettings() async {
     final key = await SettingsService.getApiKey();
     final url = await SettingsService.getBaseUrl();
+    final personality = await SettingsService.getPersonality();
+    final diaryStyle = await SettingsService.getDiaryStyle();
     _keyController.text = key;
     _urlController.text = url;
+    _personalityController.text = personality;
+    _diaryStyleController.text = diaryStyle;
   }
 
   Future<void> _save() async {
@@ -37,6 +43,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() => _isSaving = true);
     await SettingsService.setApiKey(_keyController.text.trim());
     await SettingsService.setBaseUrl(_urlController.text.trim());
+    await SettingsService.setPersonality(_personalityController.text.trim());
+    await SettingsService.setDiaryStyle(_diaryStyleController.text.trim());
     setState(() => _isSaving = false);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -115,6 +123,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const SizedBox(height: 8),
             Text('默认为 Kimi 官方地址，一般不需要修改', style: TextStyle(fontSize: 11, color: const Color(0xFF8B6F5C).withOpacity(0.6))),
+            const SizedBox(height: 28),
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF8F0),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('🎨 个性化设置', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF8B6F5C))),
+                  SizedBox(height: 6),
+                  Text('不填则使用默认设定，填了会覆盖默认行为', style: TextStyle(fontSize: 11, color: Color(0x998B6F5C))),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text('小酥性格', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Color(0xFF8B6F5C))),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _personalityController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: '例如：简洁回应，少说安慰的话，像个理性的朋友',
+                hintStyle: TextStyle(fontSize: 12, color: const Color(0xFF8B6F5C).withOpacity(0.4)),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFFFDDB3))),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFFFDDB3))),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFFF9B6A))),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text('日记风格', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Color(0xFF8B6F5C))),
+            const SizedBox(height: 8),
+            TextField(
+              controller: _diaryStyleController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: '例如：尽量多保留我的原话，少添加修饰，朴实记录就好',
+                hintStyle: TextStyle(fontSize: 12, color: const Color(0xFF8B6F5C).withOpacity(0.4)),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFFFDDB3))),
+                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFFFDDB3))),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFFF9B6A))),
+              ),
+            ),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,
@@ -139,6 +195,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void dispose() {
     _keyController.dispose();
     _urlController.dispose();
+    _personalityController.dispose();
+    _diaryStyleController.dispose();
     super.dispose();
   }
 }

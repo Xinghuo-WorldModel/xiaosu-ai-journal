@@ -4,6 +4,7 @@ import ChatPage from './pages/ChatPage'
 import DiaryListPage from './pages/DiaryListPage'
 import DiaryEditPage from './pages/DiaryEditPage'
 import SearchPage from './pages/SearchPage'
+import SettingsPage from './pages/SettingsPage'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="diary" element={<DiaryListPage />} />
         <Route path="diary/edit/:id?" element={<DiaryEditPage />} />
         <Route path="search" element={<SearchPage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
     </Routes>
   )

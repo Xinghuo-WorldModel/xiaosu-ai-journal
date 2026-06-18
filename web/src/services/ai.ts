@@ -31,6 +31,32 @@ function _parseDiaryResponse(text: string): { content: string; mood: string; key
   return { content: content || text.trim(), mood, keywords }
 }
 
+function _getUserPersonality(): string {
+  return localStorage.getItem('xiaosu_personality') || ''
+}
+
+function _getUserDiaryStyle(): string {
+  return localStorage.getItem('xiaosu_diary_style') || ''
+}
+
+function _buildChatPrompt(): string {
+  const personality = _getUserPersonality()
+  if (!personality) return SYSTEM_PROMPT
+  return `${SYSTEM_PROMPT}\n\n【用户对你性格的额外要求】\n${personality}`
+}
+
+function _buildDiaryPrompt(): string {
+  const style = _getUserDiaryStyle()
+  if (!style) return DIARY_PROMPT
+  return `${DIARY_PROMPT}\n\n【用户对日记风格的额外要求】\n${style}`
+}
+
+function _buildMergePrompt(): string {
+  const style = _getUserDiaryStyle()
+  if (!style) return MERGE_DIARY_PROMPT
+  return `${MERGE_DIARY_PROMPT}\n\n【用户对日记风格的额外要求】\n${style}`
+}
+
 const SYSTEM_PROMPT = `你是小酥，一个温暖、善解人意的 AI 日记伙伴。你的特点：
 1. 你善于倾听，会用温暖的语气回应用户的心事
 2. 你关注用户的情绪状态，在他们低落时给予鼓励和支持
@@ -73,7 +99,7 @@ export async function chat(messages: Message[]): Promise<string> {
     body: JSON.stringify({
       model: MODEL,
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'system', content: _buildChatPrompt() },
         ...messages.map(m => ({ role: m.role, content: m.content })),
       ],
       max_tokens: 512,
@@ -108,7 +134,7 @@ export async function generateDiary(conversations: Message[]): Promise<{
     body: JSON.stringify({
       model: FAST_MODEL,
       messages: [
-        { role: 'system', content: DIARY_PROMPT },
+        { role: 'system', content: _buildDiaryPrompt() },
         { role: 'user', content: conversationText },
       ],
       max_tokens: 1024,
@@ -145,7 +171,7 @@ export async function mergeDiary(existingContent: string, newConversations: Mess
     body: JSON.stringify({
       model: FAST_MODEL,
       messages: [
-        { role: 'system', content: MERGE_DIARY_PROMPT },
+        { role: 'system', content: _buildMergePrompt() },
         { role: 'user', content: userContent },
       ],
       max_tokens: 1024,

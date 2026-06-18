@@ -9,7 +9,29 @@ class AIService {
   static Future<Map<String, String>> _getConfig() async {
     final apiKey = await SettingsService.getApiKey();
     final baseUrl = await SettingsService.getBaseUrl();
-    return {'apiKey': apiKey, 'baseUrl': baseUrl};
+    final personality = await SettingsService.getPersonality();
+    final diaryStyle = await SettingsService.getDiaryStyle();
+    return {
+      'apiKey': apiKey,
+      'baseUrl': baseUrl,
+      'personality': personality,
+      'diaryStyle': diaryStyle,
+    };
+  }
+
+  static String _buildChatPrompt(String personality) {
+    if (personality.isEmpty) return _systemPrompt;
+    return '$_systemPrompt\n\n【用户对你性格的额外要求】\n$personality';
+  }
+
+  static String _buildDiaryPrompt(String diaryStyle) {
+    if (diaryStyle.isEmpty) return _diaryPrompt;
+    return '$_diaryPrompt\n\n【用户对日记风格的额外要求】\n$diaryStyle';
+  }
+
+  static String _buildMergePrompt(String diaryStyle) {
+    if (diaryStyle.isEmpty) return _mergeDiaryPrompt;
+    return '$_mergeDiaryPrompt\n\n【用户对日记风格的额外要求】\n$diaryStyle';
   }
 
   static const String _systemPrompt = '''你是小酥，一个温暖、善解人意的 AI 日记伙伴。你的特点：
@@ -57,7 +79,7 @@ class AIService {
       body: jsonEncode({
         'model': _model,
         'messages': [
-          {'role': 'system', 'content': _systemPrompt},
+          {'role': 'system', 'content': _buildChatPrompt(config['personality']!)},
           ...messages.map((m) => {'role': m.role, 'content': m.content}),
         ],
         'max_tokens': 512,
@@ -90,7 +112,7 @@ class AIService {
       body: jsonEncode({
         'model': 'moonshot-v1-8k',
         'messages': [
-          {'role': 'system', 'content': _diaryPrompt},
+          {'role': 'system', 'content': _buildDiaryPrompt(config['diaryStyle']!)},
           {'role': 'user', 'content': conversationText},
         ],
         'max_tokens': 1024,
@@ -129,7 +151,7 @@ class AIService {
       body: jsonEncode({
         'model': 'moonshot-v1-8k',
         'messages': [
-          {'role': 'system', 'content': _mergeDiaryPrompt},
+          {'role': 'system', 'content': _buildMergePrompt(config['diaryStyle']!)},
           {'role': 'user', 'content': userContent},
         ],
         'max_tokens': 1024,

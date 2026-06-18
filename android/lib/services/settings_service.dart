@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsService {
   static const _keyApiKey = 'kimi_api_key';
   static const _keyBaseUrl = 'kimi_base_url';
+  static const _keyPersonality = 'xiaosu_personality';
+  static const _keyDiaryStyle = 'xiaosu_diary_style';
 
   static Future<String> getApiKey() async {
     final prefs = await SharedPreferences.getInstance();
@@ -27,5 +29,25 @@ class SettingsService {
   static Future<bool> hasApiKey() async {
     final key = await getApiKey();
     return key.isNotEmpty;
+  }
+
+  static Future<String> getPersonality() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyPersonality) ?? '';
+  }
+
+  static Future<void> setPersonality(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyPersonality, value);
+  }
+
+  static Future<String> getDiaryStyle() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyDiaryStyle) ?? '';
+  }
+
+  static Future<void> setDiaryStyle(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyDiaryStyle, value);
   }
 }

@@ -18,6 +18,7 @@ export default function Layout() {
           <NavItem to="/chat" icon="💬" label="聊天" />
           <NavItem to="/diary" icon="📖" label="日记" />
           <NavItem to="/search" icon="🔍" label="搜索" />
+          <NavItem to="/settings" icon="⚙️" label="设置" />
         </div>
       </nav>
     </div>
