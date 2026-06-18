@@ -1,0 +1,23 @@
+# Environment files (contains API keys)
+.env
+.env.*
+
+# Build outputs
+*.apk
+android/build/
+web/dist/
+web/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flutter
+android/.dart_tool/
+android/.packages
+android/build/
