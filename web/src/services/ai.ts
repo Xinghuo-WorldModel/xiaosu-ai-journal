@@ -13,17 +13,30 @@ function _parseDiaryResponse(text: string): { content: string; mood: string; key
   const lines = text.trim().split('\n')
   for (let i = lines.length - 1; i >= 0; i--) {
     const line = lines[i].trim()
-    if (line.startsWith('{') && line.endsWith('}')) {
-      try {
-        const parsed = JSON.parse(line)
-        if (parsed.mood || parsed.keywords) {
-          mood = parsed.mood || '平静'
-          keywords = parsed.keywords || []
-          content = lines.slice(0, i).join('\n').trim()
-          break
+    if (line.includes('{') && line.includes('}')) {
+      const braceStart = line.indexOf('{')
+      const braceEnd = line.lastIndexOf('}')
+      if (braceStart >= 0 && braceEnd > braceStart) {
+        let jsonStr = line.substring(braceStart, braceEnd + 1)
+        // 修复中文引号和标点
+        jsonStr = jsonStr
+          .replace(/\u201c/g, '"')
+          .replace(/\u201d/g, '"')
+          .replace(/\u2018/g, "'")
+          .replace(/\u2019/g, "'")
+          .replace(/\uff1a/g, ':')
+          .replace(/\uff0c/g, ',')
+        try {
+          const parsed = JSON.parse(jsonStr)
+          if (parsed.mood || parsed.keywords) {
+            mood = parsed.mood || '平静'
+            keywords = parsed.keywords || []
+            content = lines.slice(0, i).join('\n').trim()
+            break
+          }
+        } catch {
+          continue
         }
-      } catch {
-        continue
       }
     }
   }

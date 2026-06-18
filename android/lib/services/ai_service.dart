@@ -215,20 +215,34 @@ class AIService {
     final lines = text.trim().split('\n');
     for (int i = lines.length - 1; i >= 0; i--) {
       final line = lines[i].trim();
-      if (line.startsWith('{') && line.endsWith('}')) {
-        try {
-          final parsed = jsonDecode(line) as Map<String, dynamic>;
-          if (parsed.containsKey('mood') || parsed.containsKey('keywords')) {
-            mood = parsed['mood'] as String? ?? '平静';
-            keywords = (parsed['keywords'] as List<dynamic>?)
-                    ?.map((e) => e.toString())
-                    .toList() ??
-                [];
-            content = lines.sublist(0, i).join('\n').trim();
-            break;
+      if (line.contains('{') && line.contains('}')) {
+        // 提取最外层 {} 内容，处理行首可能有其他字符的情况
+        final braceStart = line.indexOf('{');
+        final braceEnd = line.lastIndexOf('}');
+        if (braceStart >= 0 && braceEnd > braceStart) {
+          var jsonStr = line.substring(braceStart, braceEnd + 1);
+          // 修复中文引号
+          jsonStr = jsonStr
+              .replaceAll('\u201c', '"')
+              .replaceAll('\u201d', '"')
+              .replaceAll('\u2018', "'")
+              .replaceAll('\u2019', "'")
+              .replaceAll('\uff1a', ':')
+              .replaceAll('\uff0c', ',');
+          try {
+            final parsed = jsonDecode(jsonStr) as Map<String, dynamic>;
+            if (parsed.containsKey('mood') || parsed.containsKey('keywords')) {
+              mood = parsed['mood'] as String? ?? '平静';
+              keywords = (parsed['keywords'] as List<dynamic>?)
+                      ?.map((e) => e.toString())
+                      .toList() ??
+                  [];
+              content = lines.sublist(0, i).join('\n').trim();
+              break;
+            }
+          } catch (_) {
+            continue;
           }
-        } catch (_) {
-          continue;
         }
       }
     }
