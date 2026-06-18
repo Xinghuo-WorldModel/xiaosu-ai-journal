@@ -1,111 +1,119 @@
-# 🍪 小酥 - AI 日记伙伴
+<div align="center">
 
-小酥是一款温暖的 AI 日记应用，帮助你记录每天的生活、管理情绪，同时提供贴心的陪伴。
+# 🍪 小酥 AI 日记
 
-## 功能特色
+**和 AI 聊聊天，日记就写好了。**
 
-- **和小酥聊天** - 与 AI 伙伴对话，小酥会自动将对话整理成温暖的日记
-- **手动写日记** - 跳过对话，直接用打字或语音输入编写日记
-- **语音输入** - 支持语音转文字，说出你的心情
-- **AI 润色** - 让小酥帮你润色手写的日记
-- **关键词搜索** - 快速找到过去的记忆
-- **情绪记录** - 自动标记每篇日记的情绪状态
-- **本地存储** - 所有数据保存在本地，保护你的隐私
+一个温暖的本地 AI 日记应用——跟小酥说说今天的事，她帮你整理成日记，全程离线存储、隐私安全。
 
-## 项目结构
+[![MIT License](https://img.shields.io/badge/License-MIT-orange.svg)](LICENSE)
+[![Web](https://img.shields.io/badge/Web-React%2018-61dafb.svg)](web/)
+[![Android](https://img.shields.io/badge/Android-Flutter%203-02569B.svg)](android/)
 
-```
-xiaosu/
-├── web/        # Web 版本 (React + Vite + TailwindCSS)
-├── android/    # Android 版本 (Flutter)
-└── README.md
-```
+</div>
 
-## Web 版本
+---
 
-### 技术栈
-- React 18 + TypeScript
-- Vite 5
-- TailwindCSS 3
-- IndexedDB (via idb)
-- Web Speech API
+<div align="center">
+<img src="docs/screenshots/chat-home.png" width="220" />
+<img src="docs/screenshots/chat-reply.png" width="220" />
+<img src="docs/screenshots/diary-list.png" width="220" />
+</div>
 
-### 运行方式
+---
+
+## ⚡ 30 秒跑起来
+
+### Web 端
 
 ```bash
 cd web
-
-# 安装依赖
+cp .env.example .env          # 填入你的 Kimi API Key
 npm install
-
-# 启动开发服务器
-npm run dev
-
-# 构建生产版本
-npm run build
+npm run dev                   # → http://localhost:3000
 ```
 
-### 配置
-
-编辑 `web/.env` 文件配置 API Key：
-
-```env
-VITE_KIMI_API_KEY=你的API密钥
-VITE_KIMI_BASE_URL=https://api.moonshot.ai/v1
-VITE_KIMI_MODEL=kimi-k2.6
-```
-
-## Android 版本 (Flutter)
-
-### 技术栈
-- Flutter 3.x / Dart 3.x
-- SQLite (sqflite)
-- speech_to_text
-- Provider
-
-### 运行方式
+### Android 端
 
 ```bash
 cd android
-
-# 获取依赖
 flutter pub get
-
-# 运行到设备/模拟器
-flutter run
-
-# 构建 APK
-flutter build apk
+flutter build apk --release   # 输出在 build/app/outputs/flutter-apk/
 ```
 
-### 权限说明
-- 麦克风权限 - 语音输入功能
-- 网络权限 - 调用 AI API
+安装后在「设置」页输入你的 Kimi API Key 即可使用。
 
-## API 说明
+---
 
-本项目使用 [Kimi API](https://platform.kimi.ai/)（Moonshot AI），兼容 OpenAI 格式。
+## ✨ 核心亮点
 
-### 安全提示
+| 功能 | 说明 |
+|------|------|
+| 🗣️ 聊天即日记 | 和小酥聊天，自动提取你说的内容整理成日记 |
+| 📝 多轮合并 | 一天聊多次？自动按时间线合并到同一篇日记 |
+| ✍️ 手动编辑 | 跳过 AI，直接写日记，支持语音输入 |
+| 🔍 关键词搜索 | 搜索内容高亮匹配，快速翻阅过去的记录 |
+| 🔒 本地存储 | Web 用 IndexedDB，Android 用 SQLite，数据不上云 |
+| 🎨 暖心界面 | 奶茶色系，圆润设计，看着就舒服 |
+| 🤖 朴实记录 | 不添油加醋，保留你自己的语言风格 |
 
-⚠️ Web 版本直接在前端调用 API，API Key 可能被浏览器开发者工具看到。
-如果用于生产环境，建议搭建一个后端代理服务来保护 API Key。
+---
 
-## 环境要求
+## 🎯 为什么用小酥？
 
-### Web 版本
-- Node.js >= 18
-- 现代浏览器（Chrome/Edge/Safari）
-- 语音功能需要 Chrome 或 Edge 浏览器
+| 传统日记 App | 小酥 |
+|---|---|
+| 得自己想着写 | 聊着聊着就写好了 |
+| 格式死板 | AI 自动整理、自动合并 |
+| 数据传云端 | 纯本地，隐私放心 |
+| 冰冷工具感 | 像朋友一样陪你聊 |
 
-### Android 版本
-- Flutter SDK >= 3.2.0
-- Android SDK
-- Android 设备或模拟器
+---
 
-## 设计风格
+## 🛠️ 技术栈
 
-- 暖色调配色（米白 #FFF8F0 + 暖橙 #FF9B6A + 温棕 #8B6F5C）
-- 圆角卡片设计
-- 简洁无干扰的界面
-- 柔和的阴影和过渡动画
+| 平台 | 技术 |
+|------|------|
+| Web | React 18 + TypeScript + Vite 5 + TailwindCSS |
+| Android | Flutter 3 + Dart + SQLite |
+| AI | Kimi API (Moonshot AI)，兼容 OpenAI 格式 |
+| 存储 | Web: IndexedDB / Android: SQLite |
+
+---
+
+## 📖 项目结构
+
+```
+xiaosu-ai-journal/
+├── web/                # Web 版（React + Vite）
+│   ├── src/
+│   │   ├── pages/      # 聊天、日记列表、编辑、搜索
+│   │   ├── services/   # AI 服务、本地存储
+│   │   └── ...
+│   └── .env.example
+├── android/            # Android 版（Flutter）
+│   ├── lib/
+│   │   ├── screens/    # 聊天、日记、搜索、设置
+│   │   ├── services/   # AI、数据库、事件通知
+│   │   └── models/
+│   └── pubspec.yaml
+└── docs/screenshots/
+```
+
+---
+
+## 🤝 Contributing
+
+欢迎 PR 和 Issue！
+
+1. Fork 本仓库
+2. 创建你的分支 (`git checkout -b feat/your-feature`)
+3. 提交修改 (`git commit -m 'feat: add something'`)
+4. Push (`git push origin feat/your-feature`)
+5. 发起 Pull Request
+
+---
+
+## 📄 License
+
+[MIT](LICENSE) — 随便用，开心就好。
