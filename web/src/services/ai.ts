@@ -4,7 +4,7 @@ function getApiKey(): string {
   return localStorage.getItem('xiaosu_api_key') || import.meta.env.VITE_KIMI_API_KEY || ''
 }
 const BASE_URL = '/api/ai'
-const MODEL = import.meta.env.VITE_KIMI_MODEL
+const MODEL = import.meta.env.VITE_KIMI_MODEL || 'kimi-k2.6'
 const FAST_MODEL = 'moonshot-v1-8k'
 
 function _parseDiaryResponse(text: string): { content: string; mood: string; keywords: string[] } {
