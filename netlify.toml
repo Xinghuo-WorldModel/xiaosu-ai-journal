@@ -1,10 +1,15 @@
 [build]
   base = "web"
   command = "npm run build"
-  publish = "dist"
+  publish = "web/dist"
 
 [[redirects]]
   from = "/api/ai/*"
   to = "https://api.moonshot.cn/v1/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
