@@ -1,6 +1,8 @@
 import { Message } from '../utils/types'
 
-const API_KEY = import.meta.env.VITE_KIMI_API_KEY
+function getApiKey(): string {
+  return localStorage.getItem('xiaosu_api_key') || import.meta.env.VITE_KIMI_API_KEY || ''
+}
 const BASE_URL = '/api/ai'
 const MODEL = import.meta.env.VITE_KIMI_MODEL
 const FAST_MODEL = 'moonshot-v1-8k'
@@ -107,7 +109,7 @@ export async function chat(messages: Message[]): Promise<string> {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${getApiKey()}`,
     },
     body: JSON.stringify({
       model: MODEL,
@@ -142,7 +144,7 @@ export async function generateDiary(conversations: Message[]): Promise<{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${getApiKey()}`,
     },
     body: JSON.stringify({
       model: FAST_MODEL,
@@ -179,7 +181,7 @@ export async function mergeDiary(existingContent: string, newConversations: Mess
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${getApiKey()}`,
     },
     body: JSON.stringify({
       model: FAST_MODEL,
@@ -210,7 +212,7 @@ export async function polishDiary(rawContent: string): Promise<{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`,
+      'Authorization': `Bearer ${getApiKey()}`,
     },
     body: JSON.stringify({
       model: FAST_MODEL,
